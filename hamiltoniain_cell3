@@ -1,0 +1,29 @@
+# Cell 3: Generate the H2 molecular Hamiltonian using PySCFDriver
+
+from qiskit_nature.units import DistanceUnit
+
+# Define the H2 molecule
+driver = PySCFDriver(
+    atom=f"H 0 0 0; H 0 0 {BOND_DISTANCE}",
+    basis=BASIS_SET,
+    charge=CHARGE,
+    spin=SPIN,
+    unit=DistanceUnit.ANGSTROM
+)
+
+# Run the electronic structure calculation
+electronic_structure_problem = driver.run()
+
+# Extract molecular properties
+num_particles = electronic_structure_problem.num_particles
+num_spatial_orbitals = electronic_structure_problem.num_spatial_orbitals
+
+print("Molecular system: H2")
+print("Number of particles:", num_particles)
+print("Number of spatial orbitals:", num_spatial_orbitals)
+
+# Extract the electronic Hamiltonian
+second_q_hamiltonian = electronic_structure_problem.hamiltonian
+
+print("\nSecond-quantized molecular Hamiltonian:")
+print(second_q_hamiltonian.second_q_op())
